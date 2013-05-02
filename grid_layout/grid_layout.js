@@ -26,6 +26,10 @@ poc.GridLayout.orgObjectsPosition = [];
 
 poc.GridLayout.sceneElements = {};
 
+poc.GridLayout.numObjAcross = Math.round((window.innerWidth - 100) / 250);
+
+poc.GridLayout.numObjDown = Math.round((window.innerHeight - 80) / 190) - 1;
+
 poc.GridLayout.init = function () {
     var camera, scene, renderer, controls;
 
@@ -37,9 +41,9 @@ poc.GridLayout.init = function () {
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
     // camera is center & 'front' or screen
-    camera.position.z = 5000;    // lower the number 'closer' to objects
-    camera.position.x = -25;  // lower the number more to the right
-    camera.position.y = 0; // lower the number the more up
+    camera.position.z = (poc.GridLayout.numObjDown * 1000) * 2000;    // lower the number 'closer' to objects
+    camera.position.x = -25;  // lower the number more to the grid goes to the right
+    camera.position.y = 0; // lower the number the more the grid goes up
 
     scene = new THREE.Scene();
 
@@ -115,9 +119,9 @@ poc.GridLayout.createGrid = function (data) {
 
         var object = new THREE.Object3D();
 
-        object.position.x = ( ( i % 3 ) * 800 ) - 800;
-        object.position.y = ( -( Math.floor(i / 3) % 3 ) * 800 ) + 800;
-        object.position.z = ( Math.floor(i / 12.5) ) * 500;
+        object.position.x = ( ( i % poc.GridLayout.numObjAcross ) * 800 ) - Math.round(((poc.GridLayout.numObjAcross - 1) / 2)) * 800;
+        object.position.y = ( -( Math.floor(i / poc.GridLayout.numObjDown) % poc.GridLayout.numObjDown ) * 800 ) + 800;
+        object.position.z = ( Math.floor(i / (poc.GridLayout.numObjAcross * poc.GridLayout.numObjDown) )) * 1000;
 
         grid.push(object);
     });
